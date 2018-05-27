@@ -8,9 +8,10 @@ services:
       - grafana-storage:/var/lib/grafana
     depends_on:
       - prometheus
-      - random-8080
-      - random-8081
-      - random-8082
+      - random-9000
+      - random-9001
+      - random-9002
+      - cadvisor
       - console
     networks:
       - default
@@ -24,9 +25,10 @@ services:
     volumes:
       - prometheus-data:/prometheus
     depends_on:
-      - random-8080
-      - random-8081
-      - random-8082
+      - random-9000
+      - random-9001
+      - random-9002
+      - cadvisor
       - console
     networks:
       - default
@@ -47,17 +49,31 @@ services:
     networks:
       - default
 
-  random-8080:
+  random-9000:
     <<: *random
-    command: ["-listen-address=:8080"]
+    command: ["-listen-address=:9000"]
 
-  random-8081:
+  random-9001:
     <<: *random
-    command: ["-listen-address=:8081"]
+    command: ["-listen-address=:9001"]
 
-  random-8082:
+  random-9002:
     <<: *random
-    command: ["-listen-address=:8082"]
+    command: ["-listen-address=:9002"]
+
+  cadvisor:
+    image: google/cadvisor:latest
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:rw
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+      - /dev/disk/:/dev/disk:ro
+      - console
+    networks:
+      - default
+    ports:
+      - "8080:8080"
 
 volumes:
   prometheus-data:

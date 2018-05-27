@@ -45,3 +45,16 @@ scrape_configs:
       - targets: ['random-8082:8082']
         labels:
           group: 'canary'
+
+  - job_name: 'docker'
+         # metrics_path defaults to '/metrics'
+         # scheme defaults to 'http'.
+
+    static_configs:
+      - targets: ['docker.for.mac.host.internal:9323']
+
+  - job_name: 'container'
+    static_configs:
+      - targets: ['cadvisor:8080']
+        labels:
+          group: 'container'
