@@ -1,0 +1,47 @@
+version: "3"
+services:
+  prometheus:
+    build:
+      context: .
+      dockerfile: Dockerfile-prometheus
+    volumes:
+      - prometheus-data:/prometheus
+    networks:
+      - default
+    depends_on:
+      - random-8080
+      - random-8081
+      - random-8082
+      - console
+    ports:
+      - "9090:9090"
+
+  console:
+    build:
+      context: .
+      dockerfile: Dockerfile-console
+    networks:
+      - default
+
+  random: &random
+    build:
+      context: ./client_golang
+      dockerfile: examples/random/Dockerfile
+    networks:
+      - default
+
+  random-8080:
+    <<: *random
+    command: ["-listen-address=:8080"]
+
+  random-8081:
+    <<: *random
+    command: ["-listen-address=:8081"]
+
+  random-8082:
+    <<: *random
+    command: ["-listen-address=:8082"]
+
+volumes:
+  prometheus-data:
+    driver: local
