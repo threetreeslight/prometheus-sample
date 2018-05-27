@@ -1,24 +1,42 @@
 # prometheus-sample
 
+Work prometheus and collect sample data from dependened docker containers.
+And rednering chart with grafana
 
 ## Getting Started
 
-clone
-
 ```
-git clone this
+git clone <this>
 git submdule init --update
+
+docker-compose up grafana
 ```
 
-run
+## Dashboards
+
+name | url
+--- | ---
+Grafana dashboard  | http://localhost:3000
+prometheus dashboard  | http://localhost:9090/graph
+
+## Sample Prometheus Queries
+
+For prometheus
 
 ```
-docker-compose up prometheus
+prometheus_target_interval_length_seconds
 ```
 
-You can see prometheus on `localhost:9090`
+For random
 
-And some command via console
+```
+avg(rate(rpc_durations_seconds_count[5m])) by (job, service)
+avg(rate(rpc_durations_seconds_count[5m])) by (group)
+```
+
+## Other Usage
+
+command via console container
 
 ```
 docker-compose exec console sh
@@ -28,14 +46,4 @@ $ curl prometheus:9090/graph
 $ curl random-8080:8080/metrics
 ```
 
-# Sample Prometheus Queries
 
-For prometheus
-
-
-For random
-
-```
-avg(rate(rpc_durations_seconds_count[5m])) by (job, service)
-avg(rate(rpc_durations_seconds_count[5m])) by (group)
-```
