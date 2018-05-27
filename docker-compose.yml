@@ -1,5 +1,22 @@
 version: "3"
 services:
+  grafana:
+    build:
+      context: .
+      dockerfile: Dockerfile-grafana
+    volumes:
+      - grafana-storage:/var/lib/grafana
+    depends_on:
+      - prometheus
+      - random-8080
+      - random-8081
+      - random-8082
+      - console
+    networks:
+      - default
+    ports:
+      - "3000:3000"
+
   prometheus:
     build:
       context: .
@@ -8,11 +25,6 @@ services:
       - prometheus-data:/prometheus
     networks:
       - default
-    depends_on:
-      - random-8080
-      - random-8081
-      - random-8082
-      - console
     ports:
       - "9090:9090"
 
@@ -44,4 +56,6 @@ services:
 
 volumes:
   prometheus-data:
+    driver: local
+  grafana-storage:
     driver: local
