@@ -23,6 +23,11 @@ services:
       dockerfile: Dockerfile-prometheus
     volumes:
       - prometheus-data:/prometheus
+    depends_on:
+      - random-8080
+      - random-8081
+      - random-8082
+      - console
     networks:
       - default
     ports:
