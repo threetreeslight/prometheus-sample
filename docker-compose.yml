@@ -12,6 +12,7 @@ services:
       - random-9001
       - random-9002
       - cadvisor
+      - node-exporter
       - console
     networks:
       - default
@@ -29,6 +30,7 @@ services:
       - random-9001
       - random-9002
       - cadvisor
+      - node-exporter
       - console
     networks:
       - default
@@ -74,6 +76,14 @@ services:
       - default
     ports:
       - "8080:8080"
+
+  node-exporter:
+    image: quay.io/prometheus/node-exporter
+    networks:
+      - default
+    pid: "host"
+    ports:
+      - "9100:9100"
 
 volumes:
   prometheus-data:

@@ -58,3 +58,9 @@ scrape_configs:
       - targets: ['cadvisor:8080']
         labels:
           group: 'container'
+
+  - job_name: 'host'
+    static_configs:
+      - targets: ['node-exporter:9100']
+        labels:
+          group: 'host'
